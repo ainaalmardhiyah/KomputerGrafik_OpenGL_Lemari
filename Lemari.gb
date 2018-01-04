@@ -1,0 +1,155 @@
+Dim sudutx# 
+Dim suduty# 
+Dim kecepatan#= 0.1
+Dim zoom# = 0.01  
+
+
+Dim texture(1)
+Dim teksturalas 
+Dim textureatas
+Dim texturepintu
+
+texture(0) = loadtexture("texture/lemari.jpg")
+texture(1) = loadtexture("texture/lemari2.jpg")
+teksturalas = loadtexture("texture/lantai.jpg")
+textureatas = loadtexture("texture/lantai2.jpg")
+texturepintu = loadtexture("texture/pintu2.jpg")
+glenable(gl_texture_2d)
+
+'titik kamera (0,0,0)
+Dim kamx# = 0
+Dim kamy# = 0
+Dim kamz# = 1    
+
+'titik pandang (0,0,0)
+Dim pandangx# = 0
+Dim pandangy# = 0
+Dim pandangz# = -1
+
+while true
+
+glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)    'membersihkan memori
+glLoadIdentity()  'mengembalikan matriks
+
+'(kamera,pandang,Vlookup(ybantu))
+gluLookAt(kamx#,kamy#,kamz#,pandangx#,pandangy#,pandangz#,0,1,0)
+gltranslatef(0,0,-5)     'memindah lemari di depan mata z = -5
+glRotatef(suduty#,0,1,0) 'memutar di sumbu y
+glRotatef(sudutx#,1,0,0) 'memutar di sumbu x
+
+glBindTexture(GL_TEXTURE_2D, texture(1))  
+glBegin(gl_quads)     'belakang 
+    glTexCoord2f(0.0, 0.0)  'posisi textur kiri bawah
+    glVertex3f(-1,-2,-1)  'kiri bawah
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-1,2,-1)     'kiri atas
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(1,2,-1)       'kanan atas
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(1,-2,-1)       'kanan bawah
+glEnd()   
+
+glBindTexture(GL_TEXTURE_2D, texturepintu)  'pintu kanan
+glBegin(gl_quads)    'depan kanan  
+
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(0,-2,1)     'kiri bawah 
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(0,2,1)      'kiri atas
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(1,2,1)       'kanan atas 
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(1,-2,1)      'kanan bawah
+glEnd() 
+
+glBindTexture(GL_TEXTURE_2D, texturepintu)  'pintu kiri
+glBegin(gl_quads)    'depan kiri 
+
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-1,-2,1)     'kiri bawah 
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-1,2,1)      'kiri atas
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(0,2,1)       'kanan atas 
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(0,-2,1)      'kanan bawah
+glEnd()
+
+glBindTexture(GL_TEXTURE_2D, textureatas)
+glBegin(gl_quads)  'atas  
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-1,2,1)       'kiri Depan 
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-1,2,-1)      'kiri belakang  
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(1,2,-1)       'kanan belakang
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(1,2,1)        'kanan depan
+glEnd()
+
+glBindTexture(GL_TEXTURE_2D, texture(1))
+glBegin(gl_quads)  'bawah  
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-1,-2,1)       'kri depan
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-1,-2,-1)      'kiri belakang
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(1,-2,-1)       'kanan belakang
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(1,-2,1)        'kanan depan
+glEnd()
+
+glBindTexture(GL_TEXTURE_2D, texture(1))
+glBegin(gl_quads)  'kiri  
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-1,-2,-1)       'Bawah belakang
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-1,2,-1)        'Atas Belakang
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(-1,2,1)         'Atas depan
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(-1,-2,1)        'Bawah depan
+glEnd()         
+
+glBindTexture(GL_TEXTURE_2D, texture(1))
+glBegin(gl_quads)  'kanan  
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(1,-2,-1)         'Bawah belakang
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(1,2,-1)          'Atas belakang
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(1,2,1)           'Atas depan
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(1,-2,1)          'Bawah depan
+glEnd()
+
+ glBindTexture(GL_TEXTURE_2D, teksturalas)  
+glBegin (GL_QUADS)  'ini adalah fungsi opengl untuk membuat segi 4 alas                          
+            
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-6.0, -2.1, -6.0)  'vertex kiri atas                 
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-6.0, -2.1, 6.0) 'vertex kiri bawah                     
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(4.0, -2.1, 6.0)'vertex kanan bawah
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(4.0, -2.1, -6.0) 'vertex kanan atas
+glEnd()
+
+swapBuffers() 'memindah antara 2 buah memori
+
+if scankeydown(VK_RIGHT) Then
+    suduty# = suduty#+kecepatan# 
+elseif scankeydown(VK_LEFT) Then 
+    suduty# = suduty#-kecepatan#   
+elseif scankeydown(VK_UP) Then 
+    sudutx# = sudutx#-kecepatan#
+elseif scankeydown(VK_DOWN) Then 
+    sudutx# = sudutx# +kecepatan# 
+elseif scankeydown(VK_SHIFT) then ' zoom  in
+    kamz# = kamz# + zoom#
+elseif scankeydown(VK_CONTROL) then     'zoom out
+    kamz# = kamz# - zoom#
+endif
+
+wend
